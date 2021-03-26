@@ -1,0 +1,26 @@
+{
+  "name": "Music-Quiz-DC",
+  "version": "1.0.0",
+  "description": "Music Quiz Bot for Discord",
+  "main": "index.js",
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "dotenv": "^8.2.0",
+    "ffmpeg-static": "^4.2.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mfridberg/Music-Quiz-DC.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mfridberg/Music-Quiz-DC/issues"
+  },
+  "homepage": "https://github.com/mfridberg/Music-Quiz-DC#readme"
+}
