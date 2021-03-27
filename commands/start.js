@@ -1,3 +1,4 @@
+const { MessageEmbed } = require('discord.js');
 const ytdl = require('ytdl-core');
 
 module.exports = {
@@ -7,8 +8,8 @@ module.exports = {
         if(message.member.voice.channel) {
             const connection = message.member.voice.channel.join()
                 .then(connection => {
-                    //Change the link to be dynamic somehow!!
-                    const stream = ytdl("https://www.youtube.com/watch?v=Ko1wKjuXCKI", {filter: 'audioonly'});
+                    startMessage(message)
+                    const stream = ytdl('https://www.youtube.com/watch?v=SpgVlTJibc0', {filter: 'audioonly'});
                     const dispatcher = connection.play(stream);
 
                     dispatcher.on('start', () => {
@@ -23,4 +24,12 @@ module.exports = {
                 })
         }
     }
+}
+
+const startMessage = (m) => {
+    var e = new MessageEmbed();
+    e.setColor(0xF0FFFF);
+    e.setTitle(':musical_note: Music Quiz! :musical_note:');
+    e.setDescription('Welcome to this round of Music Quiz!\n Please select genre!');
+    m.channel.send(e)
 }
