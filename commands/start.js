@@ -6,6 +6,7 @@ module.exports = {
     name: 'start',
     description: 'Start a round of Music Quiz',
     execute(message, args) {
+        running = true;
         if(message.member.voice.channel) {
             const connection = message.member.voice.channel.join()
                 .then(connection => {
@@ -14,10 +15,15 @@ module.exports = {
                     getRandomVideo(playlistID).then((videoID) =>{
                         getMediaData(videoID).then((mediaData)=>{
                             playSound(mediaData[2], connection);
-                            console.log(`artist: ${mediaData[0]} and title: ${mediaData[1]}`);
+                            const titleFormat = /(?<=- ).+?(?= \()/;
+                            let tempTitle = mediaData[1];
+                            tempTitle = tempTitle.includes("(") 
+                                ? tempTitle.split("-")[1].split("(")[0].replace(/ /g,"").replace("'", "").toLowerCase()
+                                : tempTitle.split("-")[1].replace(/ /g,"").replace("'", "").toLowerCase();
+                            songTitle = tempTitle;
+                            console.log(`artist: ${mediaData[0]} and title: ${songTitle}`);
                         })
                     });
-                    //rätt gissning byt låt
                 });
         }
     },
