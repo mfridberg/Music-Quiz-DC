@@ -11,21 +11,20 @@ module.exports = {
                 .then(connection => {
                     startMessage(message);
                     const playlistID = args[0];
-                    const [artist, title, videoId] = getMediaData(playlistID);
-                    playSound(videoId);
+                    getRandomVideo(playlistID).then((videoID) =>{
+                        getMediaData(videoID).then((mediaData)=>{
+                            playSound(mediaData[2], connection);
+                            console.log(`artist: ${mediaData[0]} and title: ${mediaData[1]}`);
+                        })
+                    });
                     //rätt gissning byt låt
                 });
         }
     },
 };
 
-async function playSound(videoID){
-    try{
-        videoID = 
-    }
-    catch(e){}
-
-    const stream = ytdl(`https://www.youtube.com/watch?v=${videoId}`, {filter: 'audioonly'});
+async function playSound(videoID, connection){
+    const stream = ytdl(`https://www.youtube.com/watch?v=${videoID}`, {filter: 'audioonly'});
     const dispatcher = connection.play(stream);
 
     dispatcher.on('start', () => {
@@ -68,14 +67,7 @@ async function getRandomVideo(playlistID) {
     return videoID;
 }
 
-const getMediaData = async (playlistURL) => {
-    let videoURL;
-    try {
-        videoURL = await getRandomVideo(playlistURL);
-    }
-    catch(e) {
-        console.log(e);
-    }
+async function getMediaData (videoURL) {
     const url = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&id=${videoURL}&fields=items(snippet(videoOwnerChannelTitle%2C%20title%2C%20resourceId))&key=${process.env.YTTOKEN}`
     
     let response;
@@ -87,7 +79,8 @@ const getMediaData = async (playlistURL) => {
     const uploader = response.data.items[0].snippet.videoOwnerChannelTitle;
     const artist = uploader.substring(0, uploader.length-4);
     const songTitle = response.data.items[0].snippet.title;
-    return (artist, songTitle, videoID);
+    const mediaData = [artist, songTitle, videoID];
+    return mediaData;
 };
 
 const startMessage = (m) => {
