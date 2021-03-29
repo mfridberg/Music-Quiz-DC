@@ -1,13 +1,16 @@
+const stringSimilarity = require('string-similarity');
+
 const guesser = (message) => {
-    const guess = message.content.strip().toLower();
+    const guess = message.content.toLowerCase().trim();
     const caller = message.author;
-    const matchRatio = checkSimilarities(guess, songName);
+    const matchRatio = checkSimilarities(guess, songTitle);
     if(matchRatio > 0.79){
+        message.react('🥳');
         //give points to caller
         //next song
     }
     else{
-        //reagera meddelande typ bajs eller nått
+        message.react('💩');
     }
 }
 

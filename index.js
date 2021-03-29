@@ -2,7 +2,6 @@ const fs = require('fs');
 const dotenv = require('dotenv');
 const Discord = require('discord.js');
 const config = require('./config.json');
-const stringSimilarity = require('string-similarity');
 const { guesser } = require('./game-logic');
 global.running = false;
 global.songTitle;
@@ -19,6 +18,7 @@ for (const file of commandFiles) {
 }
 
 client.once('ready', () => {
+    console.log("Bot started!");
 });
 
 client.on('message', message => {
@@ -33,7 +33,7 @@ client.on('message', message => {
 
         guesser(message);
         //matcha input -> start.artist/start.title
-
+        return;
     }
 
     try {
