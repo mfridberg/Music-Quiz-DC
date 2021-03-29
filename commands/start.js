@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const songHandler = require('../song-handler')
+const songHandler = require('../song-handler');
 
 module.exports = {
     name: 'start',
@@ -11,7 +11,7 @@ module.exports = {
                 .then(connection => {
                     startMessage(message);
                     const playlistID = args[0];
-                    songHandler.startSong(playlistID, connection)
+                    songHandler.startSong(playlistID, connection);
                 });
         }
     },

@@ -18,7 +18,7 @@ for (const file of commandFiles) {
 }
 
 client.once('ready', () => {
-    console.log("Bot started!");
+    console.log('Bot started!');
 });
 
 client.on('message', message => {
@@ -29,10 +29,11 @@ client.on('message', message => {
 
     if (!client.commands.has(command) && !running) return;
 
-	if (!client.commands.has(command)){
+	if (!client.commands.has(command)) {
         if(message.channel.name === 'music-quiz') {
-            guesser(message)
-        } else {
+            guesser(message);
+        }
+        else {
             return;
         }
         return;
@@ -40,10 +41,11 @@ client.on('message', message => {
 
     try {
         client.commands.get(command).execute(message, args);
-    } catch (error) {
+    }
+    catch (error) {
         console.error(error);
         message.reply('there was an error trying to execute that command!');
     }
-})
+});
 
 client.login(process.env.TOKEN);
