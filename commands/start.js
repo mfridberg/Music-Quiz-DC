@@ -7,7 +7,7 @@ module.exports = {
     execute(message, args) {
         running = true;
         if(message.member.voice.channel) {
-            const connection = message.member.voice.channel.join()
+            message.member.voice.channel.join()
                 .then(connection => {
                     startMessage(message);
                     const playlistID = args[0];

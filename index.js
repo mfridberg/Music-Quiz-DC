@@ -30,9 +30,7 @@ client.on('message', message => {
     if (!client.commands.has(command) && !running) return;
 
 	if (!client.commands.has(command)){
-
         guesser(message);
-        //matcha input -> start.artist/start.title
         return;
     }
 
