@@ -10,7 +10,7 @@ const startSong = (playlistID, connection) => {
     getRandomVideo(playlistID).then((videoID) =>{
         getMediaData(videoID).then((mediaData)=>{
             playSound(mediaData[2], connection);
-            const titleFormat = /(?<=- ).+?(?= \()/;
+            // const titleFormat = /(?<=- ).+?(?= \()/; // Save this for later just in case.
             let tempTitle = mediaData[1];
             tempTitle = tempTitle.includes("(")
                 ? tempTitle.split("-")[1].split("(")[0].replace(/ /g,"").replace("'", "").toLowerCase()
