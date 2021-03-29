@@ -1,7 +1,12 @@
 const ytdl = require('ytdl-core');
-const axios = require('axios').default;
+const axios = require('axios');
+
+let _playlistId = undefined;
+let _connection = undefined;
 
 const startSong = (playlistID, connection) => {
+    _playlistId = playlistID;
+    _connection = connection;
     getRandomVideo(playlistID).then((videoID) =>{
         getMediaData(videoID).then((mediaData)=>{
             playSound(mediaData[2], connection);
@@ -16,7 +21,11 @@ const startSong = (playlistID, connection) => {
     });
 }
 
-async function playSound(videoID, connection){
+const skipSong = () => {
+    startSong(_playlistId, _connection);
+}
+
+const playSound = async (videoID, connection) => {
     const stream = ytdl(`https://www.youtube.com/watch?v=${videoID}`, {filter: 'audioonly'});
     const dispatcher = connection.play(stream);
 
@@ -31,11 +40,14 @@ async function playSound(videoID, connection){
     dispatcher.on('error', console.error);
 }
 
-async function getRandomVideo(playlistID) {
+const getRandomVideo = async (playlistID) => {
     const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlistID}&key=${process.env.YTTOKEN}`;
     let response;
-    try{response = await axios.get(url)}
-    catch(e) {console.log(e)}
+    try {
+        response = await axios.get(url)
+    } catch(e) {
+        console.log(e)
+    }
 
     const max = response.data.pageInfo.totalResults;
     const index = Math.floor(Math.random() * parseInt(max));
@@ -48,8 +60,11 @@ async function getRandomVideo(playlistID) {
 
     for (let i = 0; i < page; i++) {
         const nextPageUrl = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&pageToken=${pageToken}&playlistId=${playlistID}&key=${process.env.YTTOKEN}`;
-        try{response = await axios.get(nextPageUrl);}
-        catch(e) {console.log(e);}
+        try {
+            response = await axios.get(nextPageUrl);
+        } catch(e) {
+            console.log(e);
+        }
         if(response.data.nextPageToken != undefined) {
             pageToken = response.data.nextPageToken;
         }
@@ -60,13 +75,15 @@ async function getRandomVideo(playlistID) {
     return videoID;
 }
 
-async function getMediaData (videoURL) {
+const getMediaData = async (videoURL) => {
     const url = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&id=${videoURL}&fields=items(snippet(videoOwnerChannelTitle%2C%20title%2C%20resourceId))&key=${process.env.YTTOKEN}`
-
     let response;
 
-    try{response = await axios.get(url)}
-    catch(e){console.log(e)}
+    try {
+        response = await axios.get(url)
+    } catch(e) {
+        console.log(e)
+    }
 
     const videoID = response.data.items[0].snippet.resourceId.videoId;
     const uploader = response.data.items[0].snippet.videoOwnerChannelTitle;
@@ -77,3 +94,4 @@ async function getMediaData (videoURL) {
 };
 
 exports.startSong = startSong;
+exports.skipSong = skipSong;

@@ -1,4 +1,5 @@
 const stringSimilarity = require('string-similarity');
+const { skipSong } = require('./song-handler');
 
 const guesser = (message) => {
     const guess = message.content.toLowerCase().trim();
@@ -7,9 +8,8 @@ const guesser = (message) => {
     if(matchRatio > 0.79){
         message.react('🥳');
         //give points to caller
-        //next song
-    }
-    else{
+        skipSong();
+    } else {
         message.react('💩');
     }
 }
