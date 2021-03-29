@@ -30,7 +30,11 @@ client.on('message', message => {
     if (!client.commands.has(command) && !running) return;
 
 	if (!client.commands.has(command)){
-        guesser(message);
+        if(message.channel.name === 'music-quiz') {
+            guesser(message)
+        } else {
+            return;
+        }
         return;
     }
 

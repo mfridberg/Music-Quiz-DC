@@ -21,6 +21,6 @@ const startMessage = (m) => {
     const e = new MessageEmbed();
     e.setColor(0xF0FFFF);
     e.setTitle(':musical_note: Music Quiz! :musical_note:');
-    e.setDescription('Welcome to this round of Music Quiz!\n Please select genre!');
+    e.setDescription('Welcome to this round of Music Quiz!\n Rules: You only need to guess the name (and not even 100% accurately, how convenient!)');
     m.channel.send(e);
 };

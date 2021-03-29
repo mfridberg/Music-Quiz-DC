@@ -10,6 +10,7 @@
     "dotenv": "^8.2.0",
     "eslint": "^7.23.0",
     "ffmpeg-static": "^4.2.8",
+    "lint": "^0.7.0",
     "string-similarity": "^4.0.4",
     "ytdl-core": "^4.5.0"
   },
