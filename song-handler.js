@@ -10,7 +10,7 @@ const startSong = (playlistID, connection) => {
     getRandomVideo(playlistID).then((playListItemID) =>{
         getMediaData(playListItemID).then((mediaData)=>{
             playSound(mediaData[2], connection);
-            const re = /(?<=- ).+?(?= \(| \[)/
+            const re = /(?<=- ).+?(?= \(| \[|$| ft| remix)/
             let tempTitle = mediaData[1];
             let title = tempTitle.match(re)[0].toLowerCase()
             songTitle = title;
@@ -76,7 +76,7 @@ const getRandomVideo = async (playlistID) => {
 
 const getMediaData = async (playListItemID) => {
     const url = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&id=${playListItemID}&fields=items(snippet(videoOwnerChannelTitle%2C%20title%2C%20resourceId))&key=${process.env.YTTOKEN}`
-    
+
     let mediaData;
     try {
         const response = await axios.get(url);
