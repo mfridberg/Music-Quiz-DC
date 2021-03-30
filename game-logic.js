@@ -16,7 +16,7 @@ const guesser = (message) => {
             players.get(message.author.id).val++;
         }
         if (round % 5 == 0) {
-            const playerSorted = new Map([...players.entries()].sort((a, b) => b[1] - a[1]));
+            const playerSorted = new Map([...players.entries()].sort((a, b) => b[1].val - a[1].val));
             // Detta är inte rätt, men man kan ej ta index från map
             playerSorted.get(message.author.id).name += ' 👑';
             const e = new MessageEmbed();
