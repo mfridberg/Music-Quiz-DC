@@ -7,14 +7,14 @@ let _connection = undefined;
 const startSong = (playlistID, connection) => {
     _playlistId = playlistID;
     _connection = connection;
-    getRandomVideo(playlistID).then((videoID) =>{
-        getMediaData(videoID).then((mediaData)=>{
+    getRandomVideo(playlistID).then((playListItemID) =>{
+        getMediaData(playListItemID).then((mediaData)=>{
             playSound(mediaData[2], connection);
             const re = /(?<=- ).+?(?= \(| \[)/
             let tempTitle = mediaData[1];
             let title = tempTitle.match(re)[0].toLowerCase()
             songTitle = title;
-            console.log(`artist: ${mediaData[0]} and title: ${songTitle}`);
+            console.log(`title: ${songTitle}`);
         })
     });
 }
@@ -68,26 +68,26 @@ const getRandomVideo = async (playlistID) => {
         }
     }
     const videoPageIndex = index % 50;
-    const videoID = response.data.items[videoPageIndex].id;
+    const playListItemID = response.data.items[videoPageIndex].id;
+    console.log(playListItemID);
 
-    return videoID;
+    return playListItemID;
 }
 
-const getMediaData = async (videoURL) => {
-    const url = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&id=${videoURL}&fields=items(snippet(videoOwnerChannelTitle%2C%20title%2C%20resourceId))&key=${process.env.YTTOKEN}`
-    let response;
-
+const getMediaData = async (playListItemID) => {
+    const url = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&id=${playListItemID}&fields=items(snippet(videoOwnerChannelTitle%2C%20title%2C%20resourceId))&key=${process.env.YTTOKEN}`
+    
+    let mediaData;
     try {
-        response = await axios.get(url)
+        const response = await axios.get(url);
+        const videoID = response.data.items[0].snippet.resourceId.videoId;
+        const uploader = response.data.items[0].snippet.videoOwnerChannelTitle;
+        const artist = uploader.substring(0, uploader.length-4);
+        const songTitle = response.data.items[0].snippet.title;
+        mediaData = [artist, songTitle, videoID];
     } catch(e) {
-        console.log(e)
+        console.log("ERROR: "+e)
     }
-
-    const videoID = response.data.items[0].snippet.resourceId.videoId;
-    const uploader = response.data.items[0].snippet.videoOwnerChannelTitle;
-    const artist = uploader.substring(0, uploader.length-4);
-    const songTitle = response.data.items[0].snippet.title;
-    const mediaData = [artist, songTitle, videoID];
     return mediaData;
 };
 
