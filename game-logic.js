@@ -15,16 +15,15 @@ const guesser = (message) => {
         else {
             players.get(message.author.id).val++;
         }
-        if (round % 5 == 0) {
+        if (round) {
             const playerSorted = new Map([...players.entries()].sort((a, b) => b[1].val - a[1].val));
-            // Detta är inte rätt, men man kan ej ta index från map
-            playerSorted.get(message.author.id).name += ' 👑';
+            const leader = playerSorted.get(Array.from(playerSorted.keys())[0]);
             const e = new MessageEmbed();
             e.setColor(0xF0FFFF);
             e.setTitle(':musical_note: Music Quiz! :musical_note:');
             let pointString = '';
             playerSorted.forEach(player => {
-                pointString += `${player.name} has ${player.val} points \n`;
+                pointString += `${player === leader ? player.name + ' 👑' : player.name} has ${player.val} points \n`;
              });
             e.setDescription(`Current leaderboard: \n ${pointString}`);
             message.channel.send(e);
