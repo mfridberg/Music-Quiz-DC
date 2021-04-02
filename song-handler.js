@@ -10,7 +10,7 @@ const startSong = (playlistID, connection) => {
     getRandomVideo(playlistID).then((playListItemID) =>{
         getMediaData(playListItemID).then((mediaData)=>{
             playSound(mediaData[2], connection);
-            const re = /(?<=- ).+?(?= \(| \[|$| ft| remix)/
+            const re = /(?<=- ).+?(?= \(| \[|$| ft| featuring| remix| -)/
             let tempTitle = mediaData[1];
             let title = tempTitle.match(re)[0].toLowerCase()
             songTitle = title;

@@ -24,7 +24,7 @@ const guesser = (message) => {
             let pointString = '';
             playerSorted.forEach(player => {
                 pointString += `${player === leader ? player.name + ' 👑' : player.name} has ${player.val} points \n`;
-             });
+            });
             e.setDescription(`Current leaderboard: \n ${pointString}`);
             message.channel.send(e);
         }
